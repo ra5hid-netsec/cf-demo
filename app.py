@@ -4,7 +4,7 @@ THE_SECRET_KEY = "S0m3-V3ry-L0ng-and-Rand0m-Str1ng-FRHC!"
 @app.before_request
 def check_origin_secret():
     # Получаем "секретный пропуск", который добавил Cloudflare
-    secret_header = request.headers.get('X-CF-Origin-Secret')
+    secret_header = request.headers.get('X-Origin-Secret')
 
     # Проверяем "пропуск"
     if secret_header != THE_SECRET_KEY:
