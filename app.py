@@ -1,6 +1,18 @@
-from flask import Flask, request, redirect, make_response, render_template_string
-
+from flask import Flask, request, redirect, make_response, render_template_string, abort
 app = Flask(__name__)
+THE_SECRET_KEY = "S0m3-V3ry-L0ng-and-Rand0m-Str1ng-FRHC!"
+@app.before_request
+def check_origin_secret():
+    # Получаем "секретный пропуск", который добавил Cloudflare
+    secret_header = request.headers.get('X-CF-Origin-Secret')
+
+    # Проверяем "пропуск"
+    if secret_header != THE_SECRET_KEY:
+        # Если "пропуска" нет (как у `curl --resolve`) или он неверный —
+        # немедленно блокируем запрос с ошибкой 403.
+        abort(403) 
+# --- КОНЕЦ ФИКСА ---
+
 
 # Хранилище комментариев (в памяти)
 comments = []
